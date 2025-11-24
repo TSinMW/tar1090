@@ -3810,6 +3810,7 @@ function refreshSelected() {
     adjustInfoBlock();
 }
 
+//   XXXXXXXXXXXXXXXXXXXXXXXX   My Infobox stuff    XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 let somethingHighlighted = false;
 function refreshHighlighted() {
     // this is following nearly identical logic, etc, as the refreshSelected function, but doing less junk for the highlighted pane
@@ -3860,6 +3861,8 @@ function refreshHighlighted() {
 
     jQuery('#highlighted_callsign').text(highlighted.name);
 
+    jQuery('#highlighted_type').text(highlighted.icaoType);
+
     if (highlighted.icaoType !== null) {
         jQuery('#highlighted_icaotype').text(highlighted.icaoType);
     } else {
@@ -3886,10 +3889,44 @@ function refreshHighlighted() {
 
     jQuery("#highlighted_altitude").text(format_altitude_long(adjust_baro_alt(highlighted.altitude), highlighted.vert_rate, DisplayUnits));
 
+
+    if (format_track_brief(highlighted.nav_heading) !== "n/a") {
+        jQuery('#highlighted_nav_heading').updateText(format_track_brief(highlighted.nav_heading));
+    } else {
+        jQuery('#highlighted_nav_heading').text("---");
+    }
+
+    if (highlighted.nav_altitude !== null) {
+        jQuery('#highlighted_nav_altitude').updateText(highlighted.nav_altitude+" ft");
+    } else {
+        jQuery('#highlighted_nav_altitude').text("---");
+    }
+
+
+    if (highlighted.nav_modes !== "undefined") {
+        jQuery('#highlighted_nav_modes').text(" "+highlighted.nav_modes);
+    } else {
+        jQuery('#highlighted_nav_modes').text("---");
+    }
+
+    if (highlighted.squawk == null || highlighted.squawk == '0000') {
+        jQuery('#highlighted_squawk').updateText('xxx');
+    } else {
+        jQuery('#highlighted_squawk').updateText(highlighted.squawk);
+    }
+
     jQuery('#highlighted_pf_route').text((highlighted.pfRoute ? highlighted.pfRoute : highlighted.icao.toUpperCase()));
+
+    jQuery('#highlighted_altitude_geom1').updateText(format_altitude_long(adjust_geom_alt(highlighted.alt_geom, highlighted.position), highlighted.geom_rate, DisplayUnits));
+
+    jQuery('#highlighted_track').updateText(format_track_brief(highlighted.track));
+
 
     jQuery('#highlighted_rssi').text(highlighted.rssi != null ? highlighted.rssi.toFixed(1) + ' dBFS' : "n/a");
 }
+
+//   XXXXXXXXXXXXXXXXXXXXXXXX   End of My Infobox stuff    XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
 
 function removeHighlight() {
     HighlightedPlane = null;

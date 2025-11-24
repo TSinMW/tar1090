@@ -21,6 +21,8 @@ function createBaseLayers() {
     let world = new ol.Collection();
     let us = new ol.Collection();
     let europe = new ol.Collection();
+    let cid = new ol.Collection();
+
 
     const tileTransition = onMobile ? 0 : 0;
 
@@ -852,21 +854,14 @@ function createBaseLayers() {
         });
     };
 
-    // Taken from https://www.ais.pansa.pl/mil/pliki/EP_ENR_2_4_en.pdf
-    europe.push(createGeoJsonLayer('PL AWACS Orbits', 'plawacsorbits', 'geojson/PL_Mil_AWACS_Orbits.geojson', 'rgba(252, 186, 3, 0.3)', 'rgba(252, 186, 3, 1)', false));
+//  XXXXXXXXXXXXXXXXXXXXXXXXXXXX   My CID Maps  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-    // Taken from https://english.defensie.nl/binaries/defence/documenten/publications/2022/12/14/milaip-01-23-part-1-gen-part-2-enr/MILAIP_01_2023split_GEN_ENR.pdf
-    europe.push(createGeoJsonLayer('NL AWACS Orbits', 'nlawacsorbits', 'geojson/NL_Mil_AWACS_Orbits.geojson', 'rgba(252, 186, 3, 0.3)', 'rgba(252, 186, 3, 1)', false));
+    cid.push(createGeoJsonLayer('CID Airspace', 'cidmaps', 'geojson/CID_Airspace.geojson', 'rgba(200, 200, 200, 0.3)', 'rgba(200, 200, 200, 1)', false));
 
-    // Taken from https://github.com/olithissen/AwacsOrbitsDE
-    europe.push(createGeoJsonLayer('DE AWACS Orbits', 'deawacsorbits', 'geojson/DE_Mil_AWACS_Orbits.geojson', 'rgba(252, 186, 3, 0.3)', 'rgba(252, 186, 3, 1)', false));
+    cid.push(createGeoJsonLayer('CID Map 4', 'cidmaps', 'geojson/CID_Map_4.geojson', 'rgba(170, 170, 170, 0.1)', 'rgba(150, 150, 150, 1)', false));
 
-    // Taken from https://github.com/alkissack/Dump1090-OpenLayers3-html
-    europe.push(createGeoJsonLayer('UK Radar Corridors', 'ukradarcorridors', 'geojson/UK_Mil_RC.geojson', 'rgba(22, 171, 22, 0.3)', 'rgba(22, 171, 22, 1)'));
-    europe.push(createGeoJsonLayer('UK A2A Refueling', 'uka2arefueling', 'geojson/UK_Mil_AAR_Zones.geojson', 'rgba(52, 50, 168, 0.3)', 'rgba(52, 50, 168, 1)'));
-    europe.push(createGeoJsonLayer('UK AWACS Orbits', 'ukawacsorbits', 'geojson/UK_Mil_AWACS_Orbits.geojson', 'rgba(252, 186, 3, 0.3)', 'rgba(252, 186, 3, 1)', false));
+    cid.push(createGeoJsonLayer('CID Map 6', 'cidmaps', 'geojson/CID_Map_6.geojson', 'rgba(170, 170, 170, 0.2)', 'rgba(150, 150, 150, 1)', false));
 
-    us.push(createGeoJsonLayer('US A2A Refueling', 'usa2arefueling', 'geojson/US_A2A_refueling.geojson', 'rgba(52, 50, 168, 0.3)', 'rgba(52, 50, 168, 1)'));
 
     us.push(createGeoJsonLayer('US ARTCC Boundaries', 'usartccboundaries', 'geojson/US_ARTCC_boundaries.geojson', 'rgba(255, 0, 255, 0.3)', 'rgba(255, 0, 255, 1)', false));
 
@@ -959,14 +954,6 @@ function createBaseLayers() {
         layers: custom_layers,
     }));
 
-    if (europe.getLength() > 0) {
-        layers.push(new ol.layer.Group({
-            name: 'europe',
-            title: 'Europe',
-            layers: new ol.Collection(europe.getArray().reverse()),
-            fold: 'open',
-        }));
-    }
 
     if (us.getLength() > 0) {
         layers.push(new ol.layer.Group({
@@ -976,6 +963,19 @@ function createBaseLayers() {
             fold: 'open',
         }));
     }
+
+//   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX      My CID Maps  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+   if (cid.getLength() > 0) {
+        layers.push(new ol.layer.Group({
+            name: 'cid',
+            title: 'CID ATCT',
+            layers: new ol.Collection(cid.getArray().reverse()),
+            fold: 'open',
+        }));
+    }
+
+
 
     if (world.getLength() > 0) {
         layers.push(new ol.layer.Group({
